@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CANVAS & CHORD</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+
+
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div id="logo"><p>CANVAS <span>&</span> CHORD</p></div>
+        <div id="menu">
+            <a href="#">Home</a>
+            <a href="#artists-section">Artists</a>
+            <a href="#tracksPanel">Discover</a>
+            <a href="#">Contact</a>
+        </div>
+    </nav>
+
+    <!-- BANNER -->
+    <div class="banner">
+        <img src="./IMAGES/shutterstock-editorial-15344558c-6842f05d52535.avif" alt="Artist performing live">
+        <p class="banner-tag"> Music Discovery Library</p>
+        <h1>Here Is Where <em>Legends</em> Live</h1>
+        <p>Search, save and explore underground artists powered by the Spotify API.</p>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for an artist...">
+            <button onclick="searchArtists()">
+                <i class="fa fa-search"></i>&nbsp; Search
+            </button>
+        </div>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number" id="totalArtists">—</div>
+            <div class="stat-label">Artists Saved</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="totalTracks">—</div>
+            <div class="stat-label">Tracks Saved</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">🇬🇭</div>
+            <div class="stat-label">Underground Focus</div>
+        </div>
+    </div>
+
+    <!-- SEARCH RESULTS -->
+    <div class="search-results" id="searchResults">
+        <h3>Search Results</h3>
+        <div class="results-grid" id="resultsGrid"></div>
+    </div>
+
+    <!-- SAVED ARTISTS -->
+    <div class="section-header" id="artists-section">
+        <h2>Explore The Artists</h2>
+        <p id="artistCount"></p>
+    </div>
+
+    <div class="artists-section">
+        <div class="artists-grid" id="artistsGrid">
+            <div class="loading">Loading artists</div>
+        </div>
+    </div>
+
+    <!-- TRACKS PANEL -->
+    <div class="tracks-panel" id="tracksPanel">
+        <div class="tracks-header">
+            <h3>Tracks by<span id="selectedArtistName">—</span></h3>
+            <button class="fetch-tracks-btn" onclick="fetchAndSaveTracks()">
+                <i class="fa fa-refresh"></i>&nbsp; Fetch Latest Tracks
+            </button>
+        </div>
+        <div class="tracks-list" id="tracksList"></div>
+        
+    </div>
+
+    <!-- AUDIO FEATURES PANEL -->
+       
+    
+    <div class="audio-panel" id="audioPanel">
+        <div class="audio-panel-header">
+            <h4>Audio Analysis — <span id="selectedTrackName">—</span></h4>
+            <small>Powered by Spotify</small>
+        </div>
+        <div id="featuresContent"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <h2>Join The Culture</h2>
+                <p>Get ready to experience the next evolution of music culture. Always stay in the loop.</p>
+                <div class="email-signup">
+                    <p>Stay Updated</p>
+                    <form action="#">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit">→</button>
+                    </form>
+                </div>
+                <div class="social-links">
+                    <p>Our Social</p>
+                    <i class="fa fa-facebook-square"></i>
+                    <i class="fa fa-instagram"></i>
+                    <i class="fa fa-twitter"></i>
+                </div>
+            </div>
+            <div class="footer-links">
+                <div class="link-column">
+                    <h3>Links</h3>
+                    <a href="#">Home</a>
+                    <a href="#">About Us</a>
+                    <a href="#artists-section">Artists</a>
+                    <a href="#">Contact Us</a>
+                </div>
+                <div class="link-column">
+                    <h3>Discover</h3>
+                    <a href="#artists-section">Saved Artists</a>
+                    <a href="#tracksPanel">Track Lists</a>
+                    <a href="http://127.0.0.1:8000/docs" target="_blank">API Docs ↗</a>
+                    <a href="http://127.0.0.1:8000/discover/stats" target="_blank">Live Stats ↗</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>All rights reserved. © 2025 Canvas & Chord &nbsp;·&nbsp; Built with FastAPI + Spotify API</p>
+        </div>
+    </footer>
+
+    <!-- NOTIFICATION -->
+    <div class="notification" id="notification"></div>
+
+    
+</body>
+</html>
