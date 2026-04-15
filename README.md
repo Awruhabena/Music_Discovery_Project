@@ -10,7 +10,7 @@ A full-stack music discovery application built on the **Spotify Web API**. The b
 
 ## 🎬 Demo
 
-🎥 **[Watch the Demo Video →](#)** *(replace with your YouTube or Loom link)*
+🎥 **[Watch the Demo Video →](#)** *(replace with YouTube or Loom link)*
 
 | Canvas & Chord Home | Track List | API Docs |
 |---|---|---|
@@ -383,8 +383,8 @@ artists ──────────────── tracks ─────�
 **Lily Bampoe**
 Tech4Girls Backend Programme — Cohort 2026
 
-- 🔗 LinkedIn: [linkedin.com/in/yourprofile](#) *(update this)*
-- 💻 GitHub: [github.com/yourusername](#) *(update this)*
+- 🔗 LinkedIn: [https://www.linkedin.com/in/lily-bampoe-1b83983b3/]
+- 💻 GitHub: [https://github.com/Awruhabena]
 
 ---
 
