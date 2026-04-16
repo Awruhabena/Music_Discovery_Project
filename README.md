@@ -134,7 +134,7 @@ pip install -r requirements.txt
 ### 5. Set up your `.env` file
 
 ```bash
-cp .env.example .env
+cp .env.example 
 ```
 
 Open `.env` and fill in your credentials:
@@ -165,7 +165,7 @@ Visit **https://canvasandchords.onrender.com/docs** in your browser.
 
 ### 8. Open the frontend
 
-Open `frontend/index.html` in your browser.
+**Frontend App:** [https://music-discovery-project.vercel.app]
 
 ---
 
@@ -356,6 +356,7 @@ artists ──────────────── tracks ─────�
 - **Audio Features** — Spotify restricted the `/audio-features` endpoint for free-tier developer apps in 2024. The endpoint is fully built and returns a graceful error. It would work with Extended Quota Mode enabled.
 - **Top Tracks** — The Spotify top-tracks endpoint is also restricted on free tier. Tracks are fetched via the search endpoint instead.
 - **Popularity & Followers** — Spotify's free tier returns limited artist data. These fields may be `null`.
+- **⚠️ Deployment Note:** If you deploy this backend to Render or another cloud provider, your `.env` file will not be uploaded. You **must** manually add `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` as Environment Variables in your hosting dashboard for the live API to function.
 
 ---
 
@@ -394,3 +395,5 @@ Tech4Girls Backend Programme — Cohort 2026
 - [Spotify Web API](https://developer.spotify.com/documentation/web-api) — for the music data
 - [FastAPI](https://fastapi.tiangolo.com) — for the framework
 - [SQLAlchemy](https://www.sqlalchemy.org) — for the ORM
+- [Render](https://render.com/) for hosting the live backend API and database.
+- [Vercel](https://vercel.com/) for seamlessly hosting the frontend web interface.
