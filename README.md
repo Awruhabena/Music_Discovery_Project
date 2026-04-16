@@ -156,12 +156,12 @@ uvicorn main:app --reload
 You should see:
 
 ```
-INFO:     Uvicorn running on http://127.0.0.1:8000
+INFO:     Uvicorn running on http://127.0.0.1:800
 ```
 
 ### 7. Open the interactive docs
 
-Visit **http://127.0.0.1:8000/docs** in your browser.
+Visit **https://canvasandchords.onrender.com/docs** in your browser.
 
 ### 8. Open the frontend
 
@@ -190,7 +190,7 @@ Open `frontend/index.html` in your browser.
 
 ## 🧪 How to Test It
 
-The easiest way is to visit **http://127.0.0.1:8000/docs** — FastAPI generates an interactive page where you can click any endpoint, fill in values, and see the live response. No extra tools needed.
+The easiest way is to visit **https://canvasandchords.onrender.com/docs** — FastAPI generates an interactive page where you can click any endpoint, fill in values, and see the live response. No extra tools needed.
 
 Alternatively, here are example `curl` commands you can paste into your terminal:
 
@@ -206,7 +206,7 @@ Alternatively, here are example `curl` commands you can paste into your terminal
 
 **Request:**
 ```bash
-curl -X GET "http://127.0.0.1:8000/spotify/search?q=Amaarae"
+curl -X GET "https://canvasandchords.onrender.com/spotify/search?q=Amaarae"
 ```
 
 **Response:**
@@ -227,7 +227,7 @@ curl -X GET "http://127.0.0.1:8000/spotify/search?q=Amaarae"
 
 **Request:**
 ```bash
-curl -X POST "http://127.0.0.1:8000/artists?spotify_id=21UPYSRWFKwtqvSAnFnSvS"
+curl -X POST "https://canvasandchords.onrender.com/artists?spotify_id=21UPYSRWFKwtqvSAnFnSvS"
 ```
 
 **Response:**
@@ -250,7 +250,7 @@ curl -X POST "http://127.0.0.1:8000/artists?spotify_id=21UPYSRWFKwtqvSAnFnSvS"
 
 **Request:**
 ```bash
-curl -X GET "http://127.0.0.1:8000/artists"
+curl -X GET "https://canvasandchords.onrender.com/artists"
 ```
 
 **Response:**
@@ -272,7 +272,7 @@ curl -X GET "http://127.0.0.1:8000/artists"
 
 **Request:**
 ```bash
-curl -X POST "http://127.0.0.1:8000/artists/artist_ID/tracks"
+curl -X POST "https://canvasandchords.onrender.com/artists/artist_ID/tracks"
 ```
 
 **Response:**
@@ -296,7 +296,7 @@ curl -X POST "http://127.0.0.1:8000/artists/artist_ID/tracks"
 
 **Request:**
 ```bash
-curl -X GET "http://127.0.0.1:8000/discover/stats"
+curl -X GET "https://canvasandchords.onrender.com/discover/stats"
 ```
 
 **Response:**
@@ -313,7 +313,7 @@ curl -X GET "http://127.0.0.1:8000/discover/stats"
 
 **Request:**
 ```bash
-curl -X GET "http://127.0.0.1:8000/artists/invalid-id"
+curl -X GET "https://canvasandchords.onrender.com/artists/invalid-id"
 ```
 
 **Response:**
