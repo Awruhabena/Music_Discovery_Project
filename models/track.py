@@ -32,6 +32,9 @@ class TrackResponse(BaseModel):
     album_name: Optional[str]
     duration_ms: Optional[int]
     is_explicit: bool
+    preview_url:  Optional[str] = None   # 30-second audio preview
+    spotify_url:  Optional[str] = None   # Full Spotify link for Listen button
+
 
     class Config:
         from_attributes = True
