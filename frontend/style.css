@@ -409,111 +409,109 @@
         .empty-state .empty-icon { font-size: 60px; margin-bottom: 20px; opacity: 0.3; }
         .empty-state p { font-size: 16px; line-height: 1.8; max-width: 360px; margin: 0 auto; }
 
-        /* ── TRACKS PANEL ── */
-        .tracks-panel {
+        /*CONTENT SECTIONS*/
+        .content {
             width: 100%;
-            background-color: var(--dark);
-            padding: 60px;
-            display: none;
-            border-top: 3px solid var(--red);
+            overflow: hidden; 
         }
 
-        .tracks-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 32px;
-            flex-wrap: wrap;
-            gap: 20px;
+        /*Top Section */
+        .Top {
+          width: 100%;
+          height: 400px;
+          display: flex; 
         }
 
-        .tracks-panel h3 {
-            color: var(--cream);
-            font-family: var(--font-display);
-            font-size: 36px;
-            font-weight: 700;
-            line-height: 1.2;
+        .left {
+          width: 50%;
+          height: 100%;
+           background-color: #F5F5F0;
         }
 
-        .tracks-panel h3 span { color: var(--red); display: block; }
-
-        .fetch-tracks-btn {
-            padding: 12px 28px;
-            background-color: transparent;
-            color: var(--cream);
-            border: 1.5px solid rgba(255,255,255,0.2);
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            font-family: var(--font-body);
-            letter-spacing: 0.05em;
-            transition: all var(--ease);
-            white-space: nowrap;
+        .left img {
+           width: 100%;
+           height: 360px;
+           object-fit: cover; 
+           display: block;
+           padding: 30px;
         }
 
-        .fetch-tracks-btn:hover { background-color: var(--red); border-color: var(--red); }
-
-        .tracks-list { display: flex; flex-direction: column; gap: 10px; }
-
-        .track-row {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 16px 24px;
-            background-color: rgba(255,255,255,0.04);
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: background-color var(--ease);
+        .right {
+          width: 50%;
+           height: 100%;
+          background-color: #F5F5F0;
+          display: flex;
+           flex-direction: column;
+          justify-content: center; 
+           padding-left: 40px; 
         }
 
-        .track-row:hover { background-color: rgba(255,255,255,0.08); }
-
-        .track-number {
-            color: var(--red);
-            font-weight: 700;
-            font-size: 16px;
-            min-width: 28px;
-            font-family: var(--font-display);
+        .right h2 {
+          font-size: 60px;
+          color: #2D2D2D;
+          line-height: 1.2;
+          font-family: serif;
+          margin-left: 20px;
+         padding-bottom: 20px;
         }
 
-        .track-info { flex:1; min-width:0; }
-
-        .track-info p {
-            color: var(--cream);
-            font-weight: 500;
-            font-size: 14px;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+       .right p {
+         font-size: 18px;
+         color: #2D2D2D;
+         margin-bottom: 30px;
+          line-height: 1.6;
+           margin-left: 20px;
         }
 
-        .track-info small {
-            color: var(--muted);
-            font-size: 12px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+       /* Middle Section  */
+       .middle {
+          width: 100%;
+           height: 400px;
+           display: flex;
+        }
+
+        .left2 {
+          width: 50%;
+          height: 100%;
+          background-color: #F5F5F0;
+          display: flex;
+          flex-direction: column;
+          justify-content: center; 
+          padding-left: 40px; 
+        }
+
+        .left2 h2 {
+            font-size: 60px;
+           color: #2D2D2D;
+          line-height: 1.2;
+           font-family: serif;
+           margin-left: 20px;
+            padding-bottom: 20px;
+       }
+
+       .left2 p {
+           font-size: 18px;
+           color: #2D2D2D;
+            margin-bottom: 30px;
+            line-height: 1.6;
+             margin-left: 20px;
+        }
+
+        .right2 {
+          width: 50%;
+          height: 100%;
+           background-color: #F5F5F0;
+        }
+
+        .right2 img {
+            width: 100%;
+            height: 360px;
+            object-fit: cover; 
             display: block;
+            padding: 30px;
         }
 
-        .track-duration { color: var(--muted); font-size: 13px; white-space: nowrap; }
-
-        .explicit-badge {
-            background-color: var(--red);
-            color: white;
-            font-size: 9px;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            flex-shrink: 0;
-        }
-
+            
         /* ── LOADING ── */
         .loading {
             text-align: center;
