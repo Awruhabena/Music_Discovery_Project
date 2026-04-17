@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Profile | CANVAS & CHORD</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="profile.css">
+    <script src="profile.js" defer></script>
+</head>
+<body>
+
+    <!-- ── NAVIGATION ── -->
+    <nav>
+        <div id="logo"><p>CANVAS <span>&</span> CHORD</p></div>
+        <div id="menu">
+            <a href="index.html">← Home</a>
+            <a href="index.html#artists-section">Artists</a>
+            <a href="https://canvasandchords.onrender.com/docs" target="_blank">API Docs</a>
+        </div>
+    </nav>
+
+    
+    <div class="profile-banner" id="profileBanner">
+        <div class="profile-banner-overlay"></div>
+        <div class="profile-banner-content">
+            <p class="profile-tag" id="profileTag">Artist</p>
+            <h1 id="artistName">Loading...</h1>
+            <p class="profile-genres" id="artistGenres"></p>
+            <a class="spotify-link" id="spotifyLink" href="#" target="_blank" style="display:none;">
+                <i class="fa fa-spotify"></i>&nbsp; Open on Spotify
+            </a>
+        </div>
+    </div>
+
+    
+    <section class="bio-section" id="bioSection">
+        <div class="bio-inner">
+            <p class="section-label">About</p>
+            <div class="bio-text" id="bioText">
+                <div class="loading">Loading biography</div>
+            </div>
+            <p class="bio-source" id="bioSource"></p>
+        </div>
+    </section>
+
+   
+    <section class="tracks-section" id="tracksSection">
+        <div class="tracks-header">
+            <div>
+                <p class="section-label">Tracks</p>
+                <h2 class="tracks-title" id="tracksTitle">Discography</h2>
+            </div>
+            <button class="fetch-btn" id="fetchBtn" onclick="fetchTracks()">
+                <i class="fa fa-refresh"></i>&nbsp; Fetch Tracks from Spotify
+            </button>
+        </div>
+
+        <div class="tracks-list" id="tracksList">
+            <div class="loading">Loading tracks</div>
+        </div>
+    </section>
+
+   
+    <div class="audio-panel" id="audioPanel">
+        <div class="audio-panel-header">
+            <h4>Audio Analysis — <span id="selectedTrackName">—</span></h4>
+            <small>Powered by Spotify</small>
+        </div>
+        <div id="featuresContent"></div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <h2>Join The Culture</h2>
+                <p>Get ready to experience the next evolution of music culture. Always stay in the loop.</p>
+                <div class="email-signup">
+                    <p>Stay Updated</p>
+                    <form action="#">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit">→</button>
+                    </form>
+                </div>
+                <div class="social-links">
+                    <p>Our Social</p>
+                    <i class="fa fa-facebook-square"></i>
+                    <i class="fa fa-instagram"></i>
+                    <i class="fa fa-twitter"></i>
+                </div>
+            </div>
+            <div class="footer-links">
+                <div class="link-column">
+                    <h3>Links</h3>
+                    <a href="index.html">Home</a>
+                    <a href="index.html#artists-section">All Artists</a>
+                    <a href="https://canvasandchords.onrender.com/docs" target="_blank">API Docs ↗</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>All rights reserved. © 2026 Canvas & Chord &nbsp;·&nbsp; Built with FastAPI + Spotify API</p>
+        </div>
+    </footer>
+
+    <!-- ── TOAST NOTIFICATION ── -->
+    <div class="notification" id="notification"></div>
+
+</body>
+</html>
