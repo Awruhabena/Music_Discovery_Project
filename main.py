@@ -78,6 +78,53 @@ def delete_artist(artist_id: str, db: Session = Depends(get_db)):
     return {"message": "Artist deleted successfully"}
 
 
+@app.get("/artists/{artist_id}/bio", tags=["Artists"])
+def get_artist_bio(artist_id: str, db: Session = Depends(get_db)):
+    """
+    Fetches a biography for an artist using the Wikipedia REST API.
+    Falls back to a generated bio if the artist is not on Wikipedia.
+    No authentication required — Wikipedia is free and open.
+    """
+    artist = db.query(Artist).filter(Artist.id == artist_id).first()
+    if not artist:
+        raise HTTPException(status_code=404, detail="Artist not found")
+ 
+    # Try Wikipedia — search by artist name
+    try:
+        # Wikipedia REST API — returns a page summary
+        wiki_url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{artist.name.replace(' ', '_')}"
+        response = http_requests.get(wiki_url, timeout=5)
+ 
+        if response.status_code == 200:
+            data = response.json()
+            # Make sure it's actually about a person/musician, not something else
+            bio_text = data.get("extract", "")
+            thumbnail = data.get("thumbnail", {}).get("source") if data.get("thumbnail") else None
+ 
+            if bio_text and len(bio_text) > 100:
+                return {
+                    "bio": bio_text,
+                    "source": "wikipedia",
+                    "thumbnail": thumbnail,
+                    "wiki_url": data.get("content_urls", {}).get("desktop", {}).get("page")
+                }
+    except Exception:
+        pass  # Wikipedia unreachable — fall through to fallback
+ 
+    # Fallback bio built from what we know
+    genres_text = f" Known for {artist.genres}." if artist.genres else ""
+    fallback = (
+        f"{artist.name} is an artist featured on the Underground Music Discovery platform.{genres_text} "
+        f"Explore their tracks below and discover their sound before they go mainstream."
+    )
+ 
+    return {
+        "bio": fallback,
+        "source": "generated",
+        "thumbnail": None,
+        "wiki_url": None
+    }
+
 @app.get("/tracks")
 def get_all_tracks(artist_id: Optional[str] = None, db: Session = Depends(get_db)):
     query = db.query(Track)
@@ -108,7 +155,9 @@ def save_tracks(artist_id: str, db: Session = Depends(get_db)):
             artist_id=artist.id,
             album_name=raw["album"]["name"],
             duration_ms=raw["duration_ms"],
-            is_explicit=raw["explicit"]
+            is_explicit=raw["explicit"],
+            preview_url=raw.get("preview_url"),
+            spotify_url=raw.get("external_urls", {}).get("spotify"),  
         )
         db.add(track)
         saved.append(track)
