@@ -1,44 +1,88 @@
-from fastapi import FastAPI,HTTPException,Depends
+# ============================================================
+# main.py — Underground Music Discovery API
+# ============================================================
+
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from typing import List, Optional 
+from typing import Optional
+
 from models import Artist, Track, AudioFeature
+from models.artist import ArtistResponse
 from models.track import TrackResponse
 from utils import get_db, create_tables, SpotifyClient
-from models.track import TrackResponse
-from models.artist import ArtistResponse
-from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title="Underground Music Discovery API")
+# ── APP SETUP ─────────────────────────────────────────────────────────
 
+app = FastAPI(
+    title="Underground Music Discovery API",
+    description="Discover artists before they blow up. Built with FastAPI + Spotify.",
+    version="1.0.0"
+)
+
+# CORS — allow all origins so the frontend can call the API
+# regardless of which port or domain it is served from
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://music-discovery-project.vercel.app"],
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
- )
+)
 
-
+# Create all database tables on startup
 create_tables()
 
+# Initialise the Spotify client — authenticates immediately
 spotify = SpotifyClient()
 
-@app.get("/")
+
+# ── GENERAL ───────────────────────────────────────────────────────────
+
+@app.get("/", tags=["General"])
 def root():
     return {"message": "Welcome to the Underground Music Discovery API! 🎵"}
 
-@app.get("/artists")
-def get_all_artists(db: Session = Depends(get_db)):
-    artists = db.query(Artist).all()
-    return  [ArtistResponse.model_validate(a) for a in artists]
 
-@app.post("/artists") # Explanation
+@app.get("/health", tags=["General"])
+def health_check():
+    return {
+        "status": "healthy",
+        "database": "connected",
+        "spotify": "connected"
+    }
+
+
+# ── ARTISTS ───────────────────────────────────────────────────────────
+
+@app.get("/artists", tags=["Artists"])
+def get_all_artists(db: Session = Depends(get_db)):
+    """Returns all artists saved in the local database."""
+    artists = db.query(Artist).all()
+    return [ArtistResponse.model_validate(a) for a in artists]
+
+
+@app.get("/artists/{artist_id}", tags=["Artists"])
+def get_artist(artist_id: str, db: Session = Depends(get_db)):
+    """Returns a single artist by their database ID."""
+    artist = db.query(Artist).filter(Artist.id == artist_id).first()
+    if not artist:
+        raise HTTPException(status_code=404, detail="Artist not found")
+    return ArtistResponse.model_validate(artist)
+
+
+@app.post("/artists", tags=["Artists"])
 def create_artist(spotify_id: str, db: Session = Depends(get_db)):
-    # Check if artist already exists
+    """
+    Fetches an artist from Spotify by their Spotify ID
+    and saves them to the local database.
+    Returns the cached version if the artist is already saved.
+    """
+    # Return existing artist if already saved — no duplicate entries
     existing = db.query(Artist).filter(Artist.spotify_id == spotify_id).first()
     if existing:
         return ArtistResponse.model_validate(existing)
-    
-      
+
+    # Fetch from Spotify
     try:
         raw = spotify.get_artist(spotify_id)
     except Exception as e:
@@ -46,13 +90,13 @@ def create_artist(spotify_id: str, db: Session = Depends(get_db)):
             status_code=503,
             detail=f"Could not reach Spotify: {str(e)}"
         )
-    
+
     # Save to database
     new_artist = Artist(
         spotify_id=raw["id"],
         name=raw["name"],
-        image_url=raw["images"][0]["url"] if raw["images"] else None,
-        spotify_url=raw["external_urls"]["spotify"]
+        image_url=raw["images"][0]["url"] if raw.get("images") else None,
+        spotify_url=raw.get("external_urls", {}).get("spotify")
     )
     db.add(new_artist)
     db.commit()
@@ -60,16 +104,9 @@ def create_artist(spotify_id: str, db: Session = Depends(get_db)):
     return ArtistResponse.model_validate(new_artist)
 
 
-@app.get("/artists/{artist_id}")
-def get_artist(artist_id: str, db: Session = Depends(get_db)):
-    artist = db.query(Artist).filter(Artist.id == artist_id).first()
-    if not artist:
-        raise HTTPException(status_code=404, detail="Artist not found")
-    return ArtistResponse.model_validate(artist)
-
-
-@app.delete("/artists/{artist_id}")
+@app.delete("/artists/{artist_id}", tags=["Artists"])
 def delete_artist(artist_id: str, db: Session = Depends(get_db)):
+    """Permanently removes an artist from the local database."""
     artist = db.query(Artist).filter(Artist.id == artist_id).first()
     if not artist:
         raise HTTPException(status_code=404, detail="Artist not found")
@@ -81,52 +118,39 @@ def delete_artist(artist_id: str, db: Session = Depends(get_db)):
 @app.get("/artists/{artist_id}/bio", tags=["Artists"])
 def get_artist_bio(artist_id: str, db: Session = Depends(get_db)):
     """
-    Fetches a biography for an artist using the Wikipedia REST API.
-    Falls back to a generated bio if the artist is not on Wikipedia.
-    No authentication required — Wikipedia is free and open.
+    Returns a generated biography for an artist
+    based on the data stored in our database.
+
+    Note: Spotify's free tier does not provide artist bios or genres.
+    This endpoint builds a bio from the fields we do have.
     """
     artist = db.query(Artist).filter(Artist.id == artist_id).first()
     if not artist:
         raise HTTPException(status_code=404, detail="Artist not found")
- 
-    # Try Wikipedia — search by artist name
-    try:
-        # Wikipedia REST API — returns a page summary
-        wiki_url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{artist.name.replace(' ', '_')}"
-        response = http_requests.get(wiki_url, timeout=5)
- 
-        if response.status_code == 200:
-            data = response.json()
-            # Make sure it's actually about a person/musician, not something else
-            bio_text = data.get("extract", "")
-            thumbnail = data.get("thumbnail", {}).get("source") if data.get("thumbnail") else None
- 
-            if bio_text and len(bio_text) > 100:
-                return {
-                    "bio": bio_text,
-                    "source": "wikipedia",
-                    "thumbnail": thumbnail,
-                    "wiki_url": data.get("content_urls", {}).get("desktop", {}).get("page")
-                }
-    except Exception:
-        pass  # Wikipedia unreachable — fall through to fallback
- 
-    # Fallback bio built from what we know
-    genres_text = f" Known for {artist.genres}." if artist.genres else ""
-    fallback = (
-        f"{artist.name} is an artist featured on the Underground Music Discovery platform.{genres_text} "
-        f"Explore their tracks below and discover their sound before they go mainstream."
+
+    bio = (
+        f"{artist.name} is an artist featured on the Canvas & Chord "
+        f"Music Discovery platform. "
+        f"Explore their tracks below and discover their sound "
+        f"before they go mainstream."
     )
- 
+
     return {
-        "bio": fallback,
+        "bio": bio,
         "source": "generated",
-        "thumbnail": None,
+        "thumbnail": artist.image_url,
         "wiki_url": None
     }
 
-@app.get("/tracks")
+
+# ── TRACKS ────────────────────────────────────────────────────────────
+
+@app.get("/tracks", tags=["Tracks"])
 def get_all_tracks(artist_id: Optional[str] = None, db: Session = Depends(get_db)):
+    """
+    Returns all saved tracks.
+    Optionally filter by artist: GET /tracks?artist_id=abc123
+    """
     query = db.query(Track)
     if artist_id:
         query = query.filter(Track.artist_id == artist_id)
@@ -134,46 +158,68 @@ def get_all_tracks(artist_id: Optional[str] = None, db: Session = Depends(get_db
     return [TrackResponse.model_validate(t) for t in tracks]
 
 
-@app.post("/artists/{artist_id}/tracks")
+@app.post("/artists/{artist_id}/tracks", tags=["Tracks"])
 def save_tracks(artist_id: str, db: Session = Depends(get_db)):
+    """
+    Fetches tracks for an artist from Spotify and saves them to the database.
+    Skips tracks that are already saved — no duplicates.
+    The artist must already exist in the database.
+    """
     artist = db.query(Artist).filter(Artist.id == artist_id).first()
     if not artist:
         raise HTTPException(status_code=404, detail="Artist not found")
-    
-    raw_tracks = spotify.get_artist_top_tracks(artist.name)
-    
+
+    try:
+        raw_tracks = spotify.get_artist_top_tracks(artist.name)
+    except Exception as e:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Could not reach Spotify: {str(e)}"
+        )
+
     saved = []
     for raw in raw_tracks:
+        # Skip if already in database
         existing = db.query(Track).filter(Track.spotify_id == raw["id"]).first()
         if existing:
-          saved.append(existing)
-          continue
+            saved.append(existing)
+            continue
 
         track = Track(
             spotify_id=raw["id"],
             name=raw["name"],
             artist_id=artist.id,
-            album_name=raw["album"]["name"],
-            duration_ms=raw["duration_ms"],
-            is_explicit=raw["explicit"],
+            album_name=raw.get("album", {}).get("name"),
+            duration_ms=raw.get("duration_ms"),
+            is_explicit=raw.get("explicit", False),
             preview_url=raw.get("preview_url"),
-            spotify_url=raw.get("external_urls", {}).get("spotify"),  
+            spotify_url=raw.get("external_urls", {}).get("spotify"),
         )
         db.add(track)
         saved.append(track)
-    
+
+    # Single commit after all tracks are staged — more efficient
     db.commit()
     return [TrackResponse.model_validate(t) for t in saved]
 
 
-@app.post("/audio-features/{track_id}")
+# ── AUDIO FEATURES ────────────────────────────────────────────────────
+
+@app.post("/audio-features/{track_id}", tags=["Audio Features"])
 def save_audio_features(track_id: str, db: Session = Depends(get_db)):
-    # Check track exists
+    """
+    Fetches audio features for a track from Spotify and saves them.
+    Returns the cached version if features are already saved.
+
+    Note: Spotify restricts this endpoint on the free developer tier.
+    The endpoint is fully built and ready for when access is upgraded.
+    """
+    # Verify the track exists
     track = db.query(Track).filter(Track.id == track_id).first()
     if not track:
         raise HTTPException(status_code=404, detail="Track not found")
 
-    # Check if already saved
+    # Return cached version if already saved
     existing = db.query(AudioFeature).filter(
         AudioFeature.track_id == track_id
     ).first()
@@ -186,10 +232,16 @@ def save_audio_features(track_id: str, db: Session = Depends(get_db)):
         print("Spotify response:", raw)
     except Exception as e:
         print("Spotify error:", str(e))
-        raise HTTPException(status_code=503, detail=f"Could not reach Spotify: {str(e)}")
+        raise HTTPException(
+            status_code=503,
+            detail=f"Could not reach Spotify: {str(e)}"
+        )
 
     if not raw:
-        raise HTTPException(status_code=404, detail="No audio features available for this track")
+        raise HTTPException(
+            status_code=404,
+            detail="No audio features available for this track on Spotify."
+        )
 
     features = AudioFeature(
         track_id=track_id,
@@ -210,48 +262,43 @@ def save_audio_features(track_id: str, db: Session = Depends(get_db)):
     return features
 
 
-@app.get("/audio-features/{track_id}")
+@app.get("/audio-features/{track_id}", tags=["Audio Features"])
 def get_audio_features(track_id: str, db: Session = Depends(get_db)):
+    """Returns stored audio features for a track."""
     features = db.query(AudioFeature).filter(
         AudioFeature.track_id == track_id
     ).first()
     if not features:
         raise HTTPException(
             status_code=404,
-            detail="No audio features found. Click the track to fetch them first."
+            detail="No audio features found. Fetch them first via POST /audio-features/{track_id}"
         )
     return features
 
 
+# ── SPOTIFY SEARCH ────────────────────────────────────────────────────
 
-
-
-@app.get("/discover/stats")
-def get_stats(db: Session = Depends(get_db)):
-    total_artists = db.query(Artist).count()
-    total_tracks = db.query(Track).count()
-    return {
-        "total_artists": total_artists,
-        "total_tracks": total_tracks
-    }
-
-
-@app.get("/health")
-def health_check():
-    return {
-        "status": "healthy",
-        "database": "connected",
-        "spotify": "connected"
-    }
-
-
-@app.get("/spotify/search")
-def search_spotify(q: str, db: Session = Depends(get_db)):
+@app.get("/spotify/search", tags=["Spotify"])
+def search_spotify(q: str):
+    """
+    Searches Spotify live for artists matching the query.
+    Results are not saved — use POST /artists to save one.
+    """
     try:
-        results = spotify.search_artist(q)
-        return results
+        return spotify.search_artist(q)
     except Exception as e:
-      raise HTTPException(
+        raise HTTPException(
             status_code=503,
             detail=f"Could not reach Spotify: {str(e)}"
         )
+
+
+# ── DISCOVERY ─────────────────────────────────────────────────────────
+
+@app.get("/discover/stats", tags=["Discovery"])
+def get_stats(db: Session = Depends(get_db)):
+    """Returns the total number of artists and tracks in the database."""
+    return {
+        "total_artists": db.query(Artist).count(),
+        "total_tracks": db.query(Track).count()
+    }
