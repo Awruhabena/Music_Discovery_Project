@@ -8,26 +8,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
-
-
 </head>
 <body>
 
-    <!-- NAV -->
+    <!-- ── NAVIGATION ── -->
     <nav>
         <div id="logo"><p>CANVAS <span>&</span> CHORD</p></div>
         <div id="menu">
             <a href="#">Home</a>
             <a href="#artists-section">Artists</a>
-            <a href="#tracksPanel">Discover</a>
+            <a href="https://canvasandchords.onrender.com/docs" target="_blank">API Docs</a>
             <a href="#">Contact</a>
         </div>
     </nav>
 
-    <!-- BANNER -->
+    <!-- ── BANNER + SEARCH ── -->
     <div class="banner">
         <img src="./IMAGES/shutterstock-editorial-15344558c-6842f05d52535.avif" alt="Artist performing live">
-        <p class="banner-tag"> Music Discovery Library</p>
+        <p class="banner-tag">Music Discovery Library</p>
         <h1>Here Is Where <em>Legends</em> Live</h1>
         <p>Search, save and explore underground artists powered by the Spotify API.</p>
         <div class="search-container">
@@ -38,7 +36,7 @@
         </div>
     </div>
 
-    <!-- STATS BAR -->
+    <!-- ── LIVE STATS BAR ── -->
     <div class="stats-bar">
         <div class="stat-item">
             <div class="stat-number" id="totalArtists">—</div>
@@ -54,48 +52,57 @@
         </div>
     </div>
 
-    <!-- SEARCH RESULTS -->
+    <!-- ── SEARCH RESULTS (hidden until search runs) ── -->
     <div class="search-results" id="searchResults">
         <h3>Search Results</h3>
         <div class="results-grid" id="resultsGrid"></div>
     </div>
 
-    <!-- SAVED ARTISTS -->
+    <!-- ── EDITORIAL SECTION 1 ── -->
+    <section class="Top">
+        <div class="left">
+            <img src="./IMAGES/imgi_157_Sam-Cooke_on-couch_Abkco-Photo-by-Wally-Seawell_BW_SMALL-e1594430374762.jpg"
+                 alt="Artist portrait">
+        </div>
+        <div class="right">
+            <h2>More Than Just Audio.</h2>
+            <p>
+                Welcome to a world where sound meets storytelling, transforming simple frequencies
+                into immersive experiences. Here, we go beyond the playlist to explore the vision,
+                the visuals, and the raw emotion that live behind every track.
+            </p>
+        </div>
+    </section>
+
+    <!-- ── EDITORIAL SECTION 2 ── -->
+    <section class="middle">
+        <div class="left2">
+            <h2>The Pulse of the Underground.</h2>
+            <p>
+                From deep-dive album reviews to weekly spotlight playlists, this platform is built
+                for the true audiophile. Stay tuned for artist interviews, festival coverage,
+                and the tracks that should be on your radar.
+            </p>
+        </div>
+        <div class="right2">
+            <img src="./IMAGES/imgi_201_C-1.jpg" alt="Underground artist">
+        </div>
+    </section>
+
+    <!-- ── SAVED ARTISTS GRID ── -->
     <div class="section-header" id="artists-section">
         <h2>Explore The Artists</h2>
         <p id="artistCount"></p>
     </div>
 
     <div class="artists-section">
+       
         <div class="artists-grid" id="artistsGrid">
             <div class="loading">Loading artists</div>
         </div>
     </div>
 
-    <!-- TRACKS PANEL -->
-    <div class="tracks-panel" id="tracksPanel">
-        <div class="tracks-header">
-            <h3>Tracks by<span id="selectedArtistName">—</span></h3>
-            <button class="fetch-tracks-btn" onclick="fetchAndSaveTracks()">
-                <i class="fa fa-refresh"></i>&nbsp; Fetch Latest Tracks
-            </button>
-        </div>
-        <div class="tracks-list" id="tracksList"></div>
-        
-    </div>
-
-    <!-- AUDIO FEATURES PANEL -->
-       
-    
-    <div class="audio-panel" id="audioPanel">
-        <div class="audio-panel-header">
-            <h4>Audio Analysis — <span id="selectedTrackName">—</span></h4>
-            <small>Powered by Spotify</small>
-        </div>
-        <div id="featuresContent"></div>
-    </div>
-
-    <!-- FOOTER -->
+    <!-- ── FOOTER ── -->
     <footer class="site-footer">
         <div class="footer-content">
             <div class="footer-left">
@@ -126,20 +133,18 @@
                 <div class="link-column">
                     <h3>Discover</h3>
                     <a href="#artists-section">Saved Artists</a>
-                    <a href="#tracksPanel">Track Lists</a>
                     <a href="https://canvasandchords.onrender.com/docs" target="_blank">API Docs ↗</a>
                     <a href="https://canvasandchords.onrender.com/discover/stats" target="_blank">Live Stats ↗</a>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>All rights reserved. © 2025 Canvas & Chord &nbsp;·&nbsp; Built with FastAPI + Spotify API</p>
+            <p>All rights reserved. © 2026 Canvas & Chord &nbsp;·&nbsp; Built with FastAPI + Spotify API</p>
         </div>
     </footer>
 
-    <!-- NOTIFICATION -->
+    <!-- ── TOAST NOTIFICATION ── -->
     <div class="notification" id="notification"></div>
 
-    
 </body>
 </html>
