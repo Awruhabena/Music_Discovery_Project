@@ -12,9 +12,9 @@ A full-stack music discovery application built on the **Spotify Web API**. The b
 
 🎥 **[Watch the Demo Video →](#)** *(replace with YouTube or Loom link)*
 
-| Canvas & Chord Home | Track List | API Docs |
+| Canvas & Chord Home and Profile| API Docs | Stats
 |---|---|---|
-| *(add screenshot)* | *(add screenshot)* | *(add /docs screenshot)* |
+| ![Home](./screenshots/Screenshot 2026-04-18 143827.png) | ![Profile](./screenshots/Screenshot 2026-04-18 143906.png)| ![Docs](.screenshots/Screenshot 2026-04-18 143940.png) | ![Stats](./screenshots/screenshots/Screenshot 2026-04-18 144015.png)|
 
 ---
 
@@ -46,6 +46,7 @@ Music_Discovery_Project/
 ├── 📄 main.py                  # FastAPI app — all routes and endpoint logic
 ├── 📄 requirements.txt         # Python dependencies
 ├── 📄 README.md                # You are here
+├── 🔒 .env.example             # Env template 
 ├── 🔒 .env                     # Secret credentials (never committed to Git)
 ├── 🚫 .gitignore               # Files Git ignores
 │
@@ -62,10 +63,15 @@ Music_Discovery_Project/
 │   ├── spotify_client.py       # Spotify API authentication and methods
 │   └── uuid_generator.py       # UUID primary key generator
 │
+├── 📁 screenshots/
+│ 
+|
 └── 📁 frontend/
     ├── index.html              # Canvas & Chord — the full UI
     └── style.css               # Stylesheet
     └── script.js               # JavaScript
+
+
 
 ```
 
