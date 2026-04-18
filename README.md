@@ -12,9 +12,9 @@ A full-stack music discovery application built on the **Spotify Web API**. The b
 
 🎥 **[Watch the Demo Video →](#)** *(replace with YouTube or Loom link)*
 
-| Canvas & Chord Home | Profile | API Docs | Stats
+| Canvas & Chord Home and Profile| API Docs | Stats
 |---|---|---|
-| ![Home](./screenshots/Screenshot 2026-04-18 143827.png) | ![Profile](./screenshots/Screenshot 2026-04-18 143906.png)| ![Docs](.screenshots/Screenshot 2026-04-18 143940.png) | ![Stats](./screenshots/screenshots/Screenshot 2026-04-18 144015.png)|
+| ![Home](./screenshots/Screenshot 2026-04-18 143827.png) | ![Profile](./screenshots/Screenshot 2026-04-18 143906.png)| ![Docs](.screenshots/Screenshot 2026-04-18 143940.png) | ![Stats](./screenshots/Screenshot 2026-04-18 144015.png)|
 
 ---
 
