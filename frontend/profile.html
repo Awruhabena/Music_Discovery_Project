@@ -6,13 +6,14 @@
     <title>Artist Profile | CANVAS & CHORD</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Variables.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="profile.css">
+    <script src="utils.js" defer></script>
     <script src="profile.js" defer></script>
 </head>
 <body>
 
-    <!-- ── NAVIGATION ── -->
     <nav>
         <div id="logo"><p>CANVAS <span>&</span> CHORD</p></div>
         <div id="menu">
@@ -22,7 +23,6 @@
         </div>
     </nav>
 
-    
     <div class="profile-banner" id="profileBanner">
         <div class="profile-banner-overlay"></div>
         <div class="profile-banner-content">
@@ -35,7 +35,6 @@
         </div>
     </div>
 
-    
     <section class="bio-section" id="bioSection">
         <div class="bio-inner">
             <p class="section-label">About</p>
@@ -46,7 +45,6 @@
         </div>
     </section>
 
-   
     <section class="tracks-section" id="tracksSection">
         <div class="tracks-header">
             <div>
@@ -57,13 +55,11 @@
                 <i class="fa fa-refresh"></i>&nbsp; Fetch Tracks from Spotify
             </button>
         </div>
-
         <div class="tracks-list" id="tracksList">
             <div class="loading">Loading tracks</div>
         </div>
     </section>
 
-   
     <div class="audio-panel" id="audioPanel">
         <div class="audio-panel-header">
             <h4>Audio Analysis — <span id="selectedTrackName">—</span></h4>
@@ -72,7 +68,6 @@
         <div id="featuresContent"></div>
     </div>
 
-    <!-- ── FOOTER ── -->
     <footer class="site-footer">
         <div class="footer-content">
             <div class="footer-left">
@@ -106,7 +101,6 @@
         </div>
     </footer>
 
-    <!-- ── TOAST NOTIFICATION ── -->
     <div class="notification" id="notification"></div>
 
 </body>

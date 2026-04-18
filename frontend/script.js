@@ -1,16 +1,11 @@
-
-
-const API = "https://canvasandchords.onrender.com";
-
-// ── ON PAGE LOAD ──────────────────────────────────────────────────────
-
 window.onload = function () {
     loadStats();
     loadArtists();
-};
 
-// ── STATS BAR ─────────────────────────────────────────────────────────
-// Calls GET /discover/stats and updates the three stat numbers
+    document.getElementById("searchInput").addEventListener("keypress", e => {
+        if (e.key === "Enter") searchArtists();
+    });
+};
 
 async function loadStats() {
     try {
@@ -23,10 +18,6 @@ async function loadStats() {
     }
 }
 
-// ── ARTISTS GRID ──────────────────────────────────────────────────────
-// Calls GET /artists and builds clickable artist cards.
-// Clicking a card navigates to profile.html?artist_id=xxx
-
 async function loadArtists() {
     const grid = document.getElementById("artistsGrid");
 
@@ -34,7 +25,6 @@ async function loadArtists() {
         const res     = await fetch(`${API}/artists`);
         const artists = await res.json();
 
-        // Update the count label above the grid
         document.getElementById("artistCount").textContent =
             `${artists.length} artist${artists.length !== 1 ? "s" : ""} saved`;
 
@@ -47,11 +37,8 @@ async function loadArtists() {
             return;
         }
 
-        // Build one card per artist.
-        // onclick navigates to the profile page, passing the artist's database ID in the URL.
         grid.innerHTML = artists.map(a => `
-            <div class="artist-card"
-                 onclick="goToProfile('${a.id}')">
+            <div class="artist-card" onclick="goToProfile('${a.id}')">
                 <div class="artist-image-wrap">
                     ${a.image_url
                         ? `<img src="${a.image_url}" alt="${a.name}" loading="lazy">`
@@ -64,18 +51,14 @@ async function loadArtists() {
     } catch {
         grid.innerHTML = `
             <div class="empty-state">
-                <p>Could not connect to API.<br>Is uvicorn running?</p>
+                <p>Could not connect to API.<br>Is the server running?</p>
             </div>`;
     }
 }
 
-// Navigate to the artist profile page
 function goToProfile(artistId) {
     window.location.href = `profile.html?artist_id=${artistId}`;
 }
-
-// ── SPOTIFY SEARCH ────────────────────────────────────────────────────
-// Calls GET /spotify/search?q=... and shows results with Save buttons
 
 async function searchArtists() {
     const query = document.getElementById("searchInput").value.trim();
@@ -84,7 +67,6 @@ async function searchArtists() {
         return;
     }
 
-    // Show results section with loading state
     const searchResults = document.getElementById("searchResults");
     const resultsGrid   = document.getElementById("resultsGrid");
 
@@ -101,7 +83,6 @@ async function searchArtists() {
             return;
         }
 
-        // Build a card for each result with a Save button
         resultsGrid.innerHTML = results.map(a => `
             <div class="result-card">
                 ${a.images && a.images.length
@@ -121,9 +102,6 @@ async function searchArtists() {
     }
 }
 
-// ── SAVE ARTIST ───────────────────────────────────────────────────────
-// Calls POST /artists?spotify_id=... to save to the database
-
 async function saveArtist(spotifyId, btn) {
     btn.disabled    = true;
     btn.textContent = "Saving...";
@@ -135,8 +113,8 @@ async function saveArtist(spotifyId, btn) {
             btn.textContent = "Saved ✓";
             btn.classList.add("saved");
             showNotification("Artist saved! 🎵");
-            loadArtists();  // Refresh the artist grid
-            loadStats();    // Update the stats bar
+            loadArtists();
+            loadStats();
         } else {
             btn.textContent = "Error";
             btn.disabled    = false;
@@ -148,23 +126,3 @@ async function saveArtist(spotifyId, btn) {
         showNotification("API connection failed.", true);
     }
 }
-
-// ── HELPERS ───────────────────────────────────────────────────────────
-
-// Show a toast notification at the bottom-right of the screen
-function showNotification(msg, isError = false) {
-    const n        = document.getElementById("notification");
-    n.textContent  = msg;
-    n.className    = "notification" + (isError ? " error" : "");
-    n.style.display = "block";
-
-    // Auto-hide after 3 seconds
-    setTimeout(() => { n.style.display = "none"; }, 3000);
-}
-
-// Allow pressing Enter to trigger search
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("searchInput").addEventListener("keypress", e => {
-        if (e.key === "Enter") searchArtists();
-    });
-});

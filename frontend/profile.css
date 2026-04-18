@@ -1,4 +1,3 @@
-
 nav {
     position: sticky;
     top: 0;
@@ -8,10 +7,7 @@ nav {
 
 #menu a { color: var(--muted); }
 #menu a:hover { color: var(--cream); }
-#menu a:first-child { color: var(--red); } /* ← Home link highlighted */
-
-
-
+#menu a:first-child { color: var(--red); }
 
 .profile-banner {
     position: relative;
@@ -25,7 +21,6 @@ nav {
     align-items: flex-end;
 }
 
-/* Dark gradient overlay — image visible at top, dark at bottom */
 .profile-banner-overlay {
     position: absolute;
     inset: 0;
@@ -38,7 +33,6 @@ nav {
     z-index: 1;
 }
 
-/* Text content sits above the overlay */
 .profile-banner-content {
     position: relative;
     z-index: 2;
@@ -72,7 +66,6 @@ nav {
     text-transform: capitalize;
 }
 
-/* Listen on Spotify button in the banner */
 .spotify-link {
     display: inline-flex;
     align-items: center;
@@ -90,11 +83,9 @@ nav {
 }
 
 .spotify-link:hover {
-    background-color: #1DB954;  
+    background-color: #1DB954;
     border-color: #1DB954;
 }
-
-
 
 .bio-section {
     width: 100%;
@@ -103,9 +94,7 @@ nav {
     border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-.bio-inner {
-    max-width: 820px;
-}
+.bio-inner { max-width: 820px; }
 
 .section-label {
     font-size: 10px;
@@ -125,7 +114,6 @@ nav {
     max-width: 740px;
 }
 
-/* Source attribution — "Source: Wikipedia" */
 .bio-source {
     margin-top: 20px;
     font-size: 11px;
@@ -133,15 +121,8 @@ nav {
     letter-spacing: 0.08em;
 }
 
-.bio-source a {
-    color: var(--red);
-    text-decoration: none;
-}
-
+.bio-source a { color: var(--red); text-decoration: none; }
 .bio-source a:hover { text-decoration: underline; }
-
-
-
 
 .tracks-section {
     width: 100%;
@@ -167,7 +148,6 @@ nav {
     margin-top: 8px;
 }
 
-/* Fetch tracks button */
 .fetch-btn {
     padding: 12px 28px;
     background-color: transparent;
@@ -188,14 +168,12 @@ nav {
     border-color: var(--red);
 }
 
-/* Track list container */
 .tracks-list {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
-/* Individual track row */
 .track-row {
     display: flex;
     align-items: center;
@@ -213,13 +191,11 @@ nav {
     border-color: rgba(183,67,51,0.3);
 }
 
-/* Highlighted when selected */
 .track-row.active {
     border-color: var(--red);
     background-color: rgba(183,67,51,0.08);
 }
 
-/* Track number */
 .track-number {
     font-family: var(--font-display);
     font-size: 15px;
@@ -229,11 +205,7 @@ nav {
     flex-shrink: 0;
 }
 
-/* Track name and album */
-.track-info {
-    flex: 1;
-    min-width: 0;
-}
+.track-info { flex: 1; min-width: 0; }
 
 .track-info p {
     color: var(--cream);
@@ -257,7 +229,6 @@ nav {
     text-overflow: ellipsis;
 }
 
-/* Explicit content badge */
 .explicit-badge {
     background-color: var(--red);
     color: white;
@@ -269,7 +240,6 @@ nav {
     flex-shrink: 0;
 }
 
-/* Duration display */
 .track-duration {
     color: var(--muted);
     font-size: 13px;
@@ -277,7 +247,6 @@ nav {
     flex-shrink: 0;
 }
 
-/* "Analyse" hover hint */
 .track-hint {
     font-size: 11px;
     color: var(--red);
@@ -290,14 +259,13 @@ nav {
 
 .track-row:hover .track-hint { opacity: 1; }
 
-/* Listen on Spotify button — one per track row */
 .listen-btn {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 7px 14px;
     background-color: transparent;
-    color: #1DB954;                  
+    color: #1DB954;
     border: 1px solid #1DB954;
     border-radius: 20px;
     text-decoration: none;
@@ -314,7 +282,6 @@ nav {
     color: white;
 }
 
-/* Empty state for when no tracks saved */
 .tracks-empty {
     text-align: center;
     padding: 60px 20px;
@@ -322,8 +289,6 @@ nav {
     font-size: 15px;
     line-height: 1.7;
 }
-
-
 
 .audio-panel {
     width: 100%;
@@ -368,7 +333,6 @@ nav {
     text-transform: uppercase;
 }
 
-/* Feature bars grid */
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -415,7 +379,6 @@ nav {
     background-color: var(--red);
 }
 
-/* Per-feature accent colours */
 .feature-bar-fill.energy   { background-color: #f97316; }
 .feature-bar-fill.dance    { background-color: #a78bfa; }
 .feature-bar-fill.valence  { background-color: #34d399; }
@@ -423,7 +386,6 @@ nav {
 .feature-bar-fill.speech   { background-color: #fbbf24; }
 .feature-bar-fill.live     { background-color: #f472b6; }
 
-/* Metadata row: BPM, Key, Time Sig, Loudness */
 .features-meta {
     display: flex;
     gap: 32px;
@@ -458,11 +420,6 @@ nav {
     letter-spacing: 0.08em;
 }
 
-
-/* ── RESPONSIVE ──────────────────────────────────────────────
-   Stack layout adjustments for smaller screens.
-─────────────────────────────────────────────────────────── */
-
 @media (max-width: 768px) {
     .profile-banner-content { padding: 0 24px 40px; }
     .bio-section             { padding: 48px 24px; }
@@ -470,5 +427,5 @@ nav {
     .audio-panel.open        { padding: 32px 24px; }
     .tracks-header           { flex-direction: column; align-items: flex-start; }
     .features-grid           { grid-template-columns: 1fr 1fr; }
-    .listen-btn              { display: none; } /* hide on small screens to save space */
+    .listen-btn              { display: none; }
 }
